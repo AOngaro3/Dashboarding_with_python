@@ -7,4 +7,4 @@ Dashboarding using python packages
 
 Dashboard using python package Panel on Flask.
 
-![alt text](.\img\panel.png)
+![alt text](./img/panel.png?raw=true "Optional Title")
