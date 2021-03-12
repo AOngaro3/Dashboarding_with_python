@@ -8,17 +8,17 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.graph_objects as go
 
-def generate_table(dataframe, max_rows=10):
-    return html.Table([
-        html.Thead(
-            html.Tr([html.Th(col) for col in dataframe.columns])
-        ),
-        html.Tbody([
-            html.Tr([
-                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
-            ]) for i in range(min(len(dataframe), max_rows))
-        ])
-    ])
+#def generate_table(dataframe, max_rows=10):
+#    return html.Table([
+#        html.Thead(
+#            html.Tr([html.Th(col) for col in dataframe.columns])
+#        ),
+#        html.Tbody([
+#            html.Tr([
+#                html.Td(dataframe.iloc[i][col]) for col in dataframe.columns
+#            ]) for i in range(min(len(dataframe), max_rows))
+#        ])
+#    ])
 
 
 external_stylesheets = [dbc.themes.SLATE]
@@ -35,7 +35,7 @@ style_top_bar = {'backgroundColor' : "#0066ff",
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
-df = pd.read_csv("/Users/andreaongaro/Desktop/GitHub-Project/Personal/Dashboarding/Dashboarding_with_python/Dash_dash/Data/vgsales.csv")
+df = pd.read_csv("../Data/vgsales.csv")
 
 #dbc.Container(
 body = dbc.Card(
@@ -87,34 +87,6 @@ body = dbc.Card(
                 
 app.layout = html.Div([body])
 
-'''
-app.layout = html.Div(style={'backgroundColor': colors_general['background']},children=[
-
-    html.H1(children='Dashboarding with Dash',
-            style = style_top_bar
-            ),
-
-    dcc.Dropdown(
-                id='X_axis',
-                options=[{'label': i, 'value': i} for i in ["Year","Genre","Publisher"]],
-                value='Year'
-            ),
-    dcc.Dropdown(
-                id='Platform',
-                options=[{'label': i, 'value': i} for i in df["Platform"].unique().tolist()],
-                value='PS3'
-            ),
-    dcc.Graph(
-        id='first_graph'
-    ),
-    
-    dcc.Graph(
-        id='second_graph'
-    ),
-
-    generate_table(df)
-])
-'''
 @app.callback(
     Output('first_graph', 'figure'),
     Input('X_axis', 'value'),
