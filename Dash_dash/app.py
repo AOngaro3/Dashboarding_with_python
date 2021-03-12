@@ -21,10 +21,10 @@ def generate_table(dataframe, max_rows=10):
     ])
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+external_stylesheets = [dbc.themes.SLATE]
 
 colors_general = {
-    'background': '#e0ebeb'
+    'background': '#556877'
 }
 
 style_top_bar = {'backgroundColor' : "#0066ff",
@@ -38,16 +38,17 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 df = pd.read_csv("/Users/andreaongaro/Desktop/GitHub-Project/Personal/Dashboarding/Dashboarding_with_python/Dash_dash/Data/vgsales.csv")
 
 #dbc.Container(
-body = dbc.Container(
+body = dbc.Card(
+        dbc.CardBody(
     [
         dbc.Row(
             dbc.Col(
-                [   html.H1(children='Dashboarding with Dash',style = style_top_bar)
-                ]
-            )
+                [   html.H1(children='Dashboarding with Dash')
+                ],className="navbar navbar-expand-lg navbar-dark bg-primary"
+            ),
         
         ),
-
+         html.Br(),
         dbc.Row(
             [ 
                 dbc.Col(
@@ -55,7 +56,7 @@ body = dbc.Container(
                         id='X_axis',
                         options=[{'label': i, 'value': i} for i in ["Year","Genre","Publisher"]],
                         value='Year'
-                                ),
+                                ),html.Br(),
                     dcc.Dropdown(
                                 id='Platform',
                                 options=[{'label': i, 'value': i} for i in df["Platform"].unique().tolist()],
@@ -64,17 +65,25 @@ body = dbc.Container(
                     ]),
                 dbc.Col([
                     dcc.Graph(
-                                id='first_graph'
+                                id='first_graph',
+                                config={
+                        'displayModeBar': False
+                    }
                             ),
-    
+                ]),
+                dbc.Col([
                     dcc.Graph(
                         id='second_graph'
                             )
                 ])
             ]
-            ),
+            )
     ]
+    ), color = 'dark'
 )
+
+
+#fluid=True)
                 
 app.layout = html.Div([body])
 
@@ -125,8 +134,9 @@ def update_figure(X_selected,plat_selected):
     ])
 
     fig.update_layout(
-        plot_bgcolor=colors_general['background'],
-        paper_bgcolor=colors_general['background']
+       template='plotly_dark',
+        plot_bgcolor= 'rgba(0, 0, 0, 0)',
+        paper_bgcolor= 'rgba(0, 0, 0, 0)'
     )
 
     return fig
@@ -155,8 +165,9 @@ def update_figure_2(X_selected,plat_selected):
     fig = go.Figure(data=D)
     # Change the bar mode
     fig.update_layout(barmode='stack',
-        plot_bgcolor=colors_general['background'],
-        paper_bgcolor=colors_general['background']
+        template='plotly_dark',
+        plot_bgcolor= 'rgba(0, 0, 0, 0)',
+        paper_bgcolor= 'rgba(0, 0, 0, 0)'
         )
      
     
