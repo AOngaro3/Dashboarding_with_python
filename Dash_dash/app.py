@@ -8,6 +8,8 @@ from dash.dependencies import Input, Output
 import pandas as pd
 import plotly.graph_objects as go
 
+PAGE_SIZE = 5
+
 #def generate_table(dataframe, max_rows=10):
 #    return html.Table([
 #        html.Thead(
@@ -35,7 +37,7 @@ style_top_bar = {'backgroundColor' : "#0066ff",
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
-df = pd.read_csv("../Data/vgsales.csv")
+df = pd.read_csv("/Users/andreaongaro/Desktop/GitHub-Project/Personal/Dashboarding/Dashboarding_with_python/Dash_dash/Data/vgsales.csv")
 
 #dbc.Container(
 body = dbc.Card(
@@ -78,8 +80,26 @@ body = dbc.Card(
                 ])
             ]
             )
-    ]
-    ), color = 'dark'
+    
+    ,
+        dbc.Row(
+            [dash_table.DataTable(
+                id='table',
+                columns=[{"name": i, "id": i} for i in df.columns],
+                
+                page_current = 0,
+                page_size = PAGE_SIZE,
+                page_action = "custom",
+                style_as_list_view=True,
+                style_header={'backgroundColor': 'rgb(30, 30, 30)'},
+                style_cell={
+                    'backgroundColor': 'rgb(50, 50, 50)',
+                    'color': 'white'
+                },
+            )
+            ]
+          )]
+      ),  color = 'dark'
 )
 
 
@@ -144,6 +164,15 @@ def update_figure_2(X_selected,plat_selected):
      
     
     return fig
+
+@app.callback(
+    Output('table', 'data'),
+    Input('table', "page_current"),
+    Input('table', "page_size"))
+def update_table(page_current,page_size):
+    return df.iloc[
+        page_current*page_size:(page_current+ 1)*page_size
+    ].to_dict('records')
 
 
 
